@@ -1,0 +1,25 @@
+{
+  "name": "p2-iproject-client",
+  "version": "1.0.0",
+  "description": "Individual Project - Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Josiahaan/p2-iproject-client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Josiahaan/p2-iproject-client/issues"
+  },
+  "homepage": "https://github.com/Josiahaan/p2-iproject-client#readme",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "sweetalert2": "^11.4.6",
+    "vue-cli": "^2.9.6"
+  }
+}
