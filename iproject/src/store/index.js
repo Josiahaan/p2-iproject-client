@@ -54,7 +54,7 @@ export default new Vuex.Store({
           password: payload.password,
         });
         console.log(response)
-        // localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("access_token", response.data.access_token);
         // localStorage.setItem("email", response.data.payload.email);
         // localStorage.setItem("id", response.data.payload.id);
         // localStorage.setItem("username", response.data.payload.username);
@@ -132,6 +132,25 @@ export default new Vuex.Store({
        }
       }
     },
+    async addCartHandler(_, payload) {
+      console.log(payload, "<<<<<<<<<<<<");
+      try {
+        await axios.post(`${url}/cartitem`, {
+          quantity: payload.quantity,
+          cart: payload.product
+        }, {
+          headers: {
+            access_token: localStorage.access_token
+          }
+        })
+      } catch(err) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+        });
+      }
+    }
   },
   modules: {
   }

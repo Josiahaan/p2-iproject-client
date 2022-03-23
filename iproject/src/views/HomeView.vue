@@ -6,16 +6,20 @@
       </div>
 
       <!-- Product CARDS -->
-      <ProductList
-      :products="products"
+      <div class="grid grid-cols-4 gap-4">
+      <ProductList v-for="product in products" :key="product.product_code"
+      :product="product"
       ></ProductList>
-    </div>
+      </div>
+      </div>
      <Pagination></Pagination>
+  <HFooter></HFooter>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import HFooter from 'vue-hacktiv8-footer'
 import ProductList from '../components/productLists/ProductList.vue'
 import { mapActions, mapState } from 'vuex'
 import Pagination from '../components/productLists/Pagination.vue'
@@ -24,7 +28,8 @@ export default {
   name: 'HomeView',
   components: {
     ProductList,
-    Pagination
+    Pagination,
+    HFooter
   },
     methods: {
     ...mapActions(["fetchAllProducts"])

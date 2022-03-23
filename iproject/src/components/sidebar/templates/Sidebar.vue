@@ -3,7 +3,7 @@
     class="w-4/24 min-h-screen bg-slate-900 opacity-75 flex flex-col items-center"
   >
     <button class="text-white text-3xl font-bold mt-8"
-    @click.prevent="$router.push({ name: 'Home' })">CareerPortal</button>
+    @click.prevent="$router.push({ name: 'Home' })">Hacktiv Store</button>
 
     <ProfileBar v-if="isLogged"></ProfileBar>
     <BlueButton
