@@ -39,7 +39,7 @@ export default {
     ...mapMutations(["CHANGE_ISLOGGED"]),
     logoutHandler() {
       // console.log("Logout");
-      let username = localStorage.getItem("username");
+      let username = localStorage.getItem("name");
       localStorage.clear();
       this.CHANGE_ISLOGGED(false);
       Swal.fire({

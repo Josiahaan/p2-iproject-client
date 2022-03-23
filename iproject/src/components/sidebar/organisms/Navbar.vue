@@ -7,7 +7,7 @@
       Product
     </router-link>
     <router-link
-      to="/bookmarks"
+      to="/cartitem"
       class="w-full flex items-center py-6 pl-10 border-sky-400 font-sans text-white text-md hover:bg-blue-800"
     >
       Cart

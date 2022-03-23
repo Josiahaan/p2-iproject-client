@@ -34,6 +34,21 @@ const routes = [
   },
   component: () => import("../views/Register.vue"),
 },
+{
+  path: "/cartitem",
+  name: "CartItem",
+  beforeEnter: (to, from, next) => {
+    if (!localStorage.getItem("access_token")) {
+      next({
+        name: "Login"
+      });
+    } else {
+      next();
+    }
+  },
+  component: () =>
+    import("../views/CartPage.vue"),
+},
 ]
 
 const router = new VueRouter({

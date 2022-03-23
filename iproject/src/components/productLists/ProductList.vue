@@ -1,5 +1,5 @@
 <template>
-<div class="max-w-sm bg-slate-900 rounded px-4 py-2 overflow-hidden shadow-lg">
+<div :product="product" class="max-w-sm bg-slate-900 rounded px-4 py-2 overflow-hidden shadow-lg">
   <!-- <div
     class="mt-12 mb-8 w-full min-h-screen grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 vsm:grid-cols-1 gap-y-8 lg:gap-x-4 md:gap-x-2 sm:gap-x-2 gap-x-2"
   >
@@ -26,10 +26,11 @@
   <div class="px-6 pt-4 pb-2">
     <span class="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Rp.{{product.product_price}},00</span>
     <span class="inline-block bg-green-400 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mb-2">{{product.status}}</span>
-    <form class="" @submit.prevent="clickAdd()">
+    <form v-if="$route.path === '/'" class="" @submit.prevent="clickAdd()">
       <input type="number" v-model="quantity">
     <button class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Add To Cart</button>
     </form>
+    <button  @click.prevent="checkout" v-if="$route.path === '/cartitem'" class="inline-block bg-red-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"> checkout </button>
   </div>
 </div>
 </div>
@@ -50,6 +51,9 @@ export default {
     clickAdd(){
       console.log("clicked");
       this.$store.dispatch('addCartHandler', {quantity: this.quantity, product: this.product})
+    },
+    checkout() {
+      this.$store.dispatch('payment', {id: this.product.id,name: localStorage.name, email: localStorage.email, price: this.product.product_price, itemName: this.product.product_description})
     }
   },
   created(){

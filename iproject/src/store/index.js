@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     isLogged: false,
     productList: [],
+    cartList: [],
     pageNumber: 1,
     maxPageNumber: null,
     perPage: 8,
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     FETCH_PRODUCT(state, payload) {
       state.productList = payload;
+    },
+    FETCH_CART(state, payload) {
+      state.cartList = payload;
     },
     TO_LASTPAGE(state) {
       state.pageNumber = state.maxPageNumber;
@@ -55,7 +59,8 @@ export default new Vuex.Store({
         });
         console.log(response)
         localStorage.setItem("access_token", response.data.access_token);
-        // localStorage.setItem("email", response.data.payload.email);
+        localStorage.setItem("name", response.data.payload.fullname);
+        localStorage.setItem("email", response.data.payload.email);
         // localStorage.setItem("id", response.data.payload.id);
         // localStorage.setItem("username", response.data.payload.username);
 
@@ -143,6 +148,11 @@ export default new Vuex.Store({
             access_token: localStorage.access_token
           }
         })
+        Swal.fire({
+          icon: "success",
+          title: "Add Item",
+          text: `sucess add item to cart`,
+        });
       } catch(err) {
         Swal.fire({
           icon: "error",
@@ -150,7 +160,96 @@ export default new Vuex.Store({
           text: err.response.data.message,
         });
       }
-    }
+    },
+    async fetchAllCarts({ commit }) {
+      try {
+        const response = await axios.get(`${url}/cartitem`, {
+          headers: {
+            access_token: localStorage.getItem("access_token"),
+          },
+        });
+        console.log(response.data,"penanda")
+        let data = [];
+        response.data.forEach(e => {
+          // console.log(e,"hasil map");
+          // console.log(e.cart,"ouput cart");
+          e.cart.id = e.id
+          data.push(e.cart)
+          // console.log(e,"nyaari id");
+        })
+        commit("FETCH_CART", data);
+      } catch (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+        });
+      }
+    },
+    payment(context, payload) {
+      console.log("click payment", payload);
+      axios.post(`${url}/payment`, payload, {
+        headers : {
+          access_token: localStorage.access_token
+        }
+      })
+      .then(resp => {
+        // console.log(resp);
+        window.snap.pay(resp.data.token, {
+          onSuccess: () => {
+            /* You may add your own implementation here */
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "payment success!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            axios.delete(`${url}/cartitem/${payload.id}`, {
+              headers: {
+                access_token: localStorage.access_token
+              }, data: payload,
+            })
+            // this.fetchAllCarts()
+            .then(() => {
+              context.dispatch('fetchAllCarts')
+            })
+          },
+          onPending: () => {
+            /* You may add your own implementation here */
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "wating your payment!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+          onError: () => {
+            /* You may add your own implementation here */
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: "payment failed!",
+            })
+          },
+          onClose: () => {
+            /* You may add your own implementation here */
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "you closed the popup without finishing the payment",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    },
+
   },
   modules: {
   }
