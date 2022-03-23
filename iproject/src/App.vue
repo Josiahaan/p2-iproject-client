@@ -1,13 +1,29 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <div id="container">
+      <!-- SIDEBAR -->
+      <Sidebar></Sidebar>
+
+      <!-- CONTENT -->
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
+<script>
+import Sidebar from './components/sidebar/templates/Sidebar.vue'
+export default {
+  name: "App",
+  components: {
+    Sidebar
+  },
+  created() {
+    if (localStorage.getItem("token")) {
+      this.$store.commit("CHANGE_ISLOGGED", true)
+    }
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -17,16 +33,20 @@
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+#container {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(
+    at right top,
+    rgb(51, 65, 85),
+    rgb(30, 41, 59),
+    rgb(17, 24, 39)
+  );
+  display: flex;
+  flex-direction: row;
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.fa-solid {
+  color: white;
+  padding-top: 1rem;
 }
 </style>
