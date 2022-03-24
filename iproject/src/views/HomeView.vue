@@ -1,7 +1,7 @@
 <template>
 <div class="w-20/24">
     <div class="mx-10 flex flex-col">
-      <div class="mt-8 text-white text-3xl font-medium text-left">
+      <div class="mt-8 text-white text-3xl font-medium text-left py-6 px-3">
         Product lists
       </div>
 
@@ -13,13 +13,11 @@
       </div>
       </div>
      <Pagination></Pagination>
-  <HFooter></HFooter>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HFooter from 'vue-hacktiv8-footer'
 import ProductList from '../components/productLists/ProductList.vue'
 import { mapActions, mapState } from 'vuex'
 import Pagination from '../components/productLists/Pagination.vue'
@@ -29,7 +27,6 @@ export default {
   components: {
     ProductList,
     Pagination,
-    HFooter
   },
     methods: {
     ...mapActions(["fetchAllProducts"])

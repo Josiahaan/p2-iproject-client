@@ -7,15 +7,20 @@
       <!-- CONTENT -->
       <router-view></router-view>
     </div>
+    <div>
+    <HFooter></HFooter>
+    </div>
   </div>
 </template>
 
 <script>
+import HFooter from 'vue-hacktiv8-footer'
 import Sidebar from './components/sidebar/templates/Sidebar.vue'
 export default {
   name: "App",
   components: {
-    Sidebar
+    Sidebar,
+    HFooter
   },
   created() {
     if (localStorage.getItem("token")) {

@@ -151,7 +151,7 @@ export default {
   computed: {
     ...mapState(["pageNumber", "maxPageNumber"]),
     page() {
-      console.log(this.maxPageNumber);
+      // console.log(this.maxPageNumber);
       return `${this.pageNumber} of ${this.maxPageNumber}`;
     },
   },

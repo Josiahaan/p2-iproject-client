@@ -49,6 +49,14 @@
             Don't have account? Register here
           </button>
         </div>
+          <div class="flex justify-center pt-10 pb-10">
+          <GoogleLogin
+            :params="params"
+            :renderParams="renderParams"
+            :onSuccess="onSuccess"
+            :onFailure="onFailure"
+          ></GoogleLogin>
+        </div>
       </div>
     </div>
   </div>
@@ -56,10 +64,12 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import GoogleLogin from "vue-google-login";
 import BlueButton from "../components/buttons/BlueButton.vue";
 export default {
   name: "LoginPage",
   components: {
+    GoogleLogin,
     BlueButton
   },
   data() {
@@ -68,7 +78,16 @@ export default {
         email: "",
         password: "",
       },
-    };
+      renderParams: {
+        width: 230,
+        height: 50,
+        longtitle: true,
+      },
+      params: {
+        client_id:
+          "560261770081-e1mp36o14etf2tcdj4lkq4kg5se5lf3e.apps.googleusercontent.com",
+      },
+    }
   },
   methods: {
     ...mapActions(["loginHandler"]),
@@ -81,6 +100,18 @@ export default {
       }
     },
   },
+  async onSuccess(googleUser) {
+      // console.log(googleUser.getBasicProfile());
+      let googleToken = googleUser.getAuthResponse().id_token;
+      const response = await this.loginGoogleHandler(googleToken);
+      // console.log(response)
+      if (response) {
+        this.$router.push({ name: "Home" })
+      }
+    },
+    onFailure(err) {
+      console.log(err);
+    },
   computed: {
     ...mapState(["isLogged"]),
   },

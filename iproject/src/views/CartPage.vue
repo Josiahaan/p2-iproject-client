@@ -1,7 +1,7 @@
 <template>
   <div class="w-20/24">
     <div class="mx-10 flex flex-col">
-      <div class="mt-8 text-white text-3xl font-medium text-left">
+      <div class="mt-8 text-white text-3xl font-medium text-left py-6 px-3">
         My Cart
       </div>
       <!-- CART CARDS -->

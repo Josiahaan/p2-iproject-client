@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Swal from "sweetalert2";
 import axios from "axios"
-let url = "http://localhost:3000"
+let url = "https://hacktivstore.herokuapp.com"
 
 Vue.use(Vuex)
 
@@ -57,7 +57,7 @@ export default new Vuex.Store({
           email: payload.email,
           password: payload.password,
         });
-        console.log(response)
+        // console.log(response)
         localStorage.setItem("access_token", response.data.access_token);
         localStorage.setItem("name", response.data.payload.fullname);
         localStorage.setItem("email", response.data.payload.email);
@@ -71,7 +71,7 @@ export default new Vuex.Store({
           text: `Welcome to HackStore :D`,
         });
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -86,6 +86,8 @@ export default new Vuex.Store({
           fullname: payload.fullname,
           email: payload.email,
           password: payload.password,
+          phoneNumber: payload.phoneNumber,
+          address: payload.address,
         });
         Swal.fire({
           icon: "success",
@@ -113,7 +115,7 @@ export default new Vuex.Store({
           //   token: localStorage.getItem("token"),
           // },
         });
-        console.log(response.data.length, state.perPage);
+        // console.log(response.data.length, state.perPage);
         const maxPageNumber = Math.ceil(response.data.length / state.perPage);
         // console.log(maxPageNumber);
         data = response.data
@@ -126,19 +128,19 @@ export default new Vuex.Store({
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: err.response.data.message,
+          text: "err",
         });
       }
       finally {
         // console.log("masuk finally");
        if(errorStatus === false) {
          commit("FETCH_PRODUCT", data)
-        console.log(data);
+        // console.log(data);
        }
       }
     },
     async addCartHandler(_, payload) {
-      console.log(payload, "<<<<<<<<<<<<");
+      // console.log(payload, "<<<<<<<<<<<<");
       try {
         await axios.post(`${url}/cartitem`, {
           quantity: payload.quantity,
@@ -168,7 +170,7 @@ export default new Vuex.Store({
             access_token: localStorage.getItem("access_token"),
           },
         });
-        console.log(response.data,"penanda")
+        // console.log(response.data,"penanda")
         let data = [];
         response.data.forEach(e => {
           // console.log(e,"hasil map");
@@ -187,7 +189,7 @@ export default new Vuex.Store({
       }
     },
     payment(context, payload) {
-      console.log("click payment", payload);
+      // console.log("click payment", payload);
       axios.post(`${url}/payment`, payload, {
         headers : {
           access_token: localStorage.access_token
@@ -248,6 +250,44 @@ export default new Vuex.Store({
       .catch(err => {
         console.log(err);
       })
+    },
+    async cancel(context, payload) {
+      // console.log(payload);
+      try {
+        await axios.delete(`${url}/cartitem/${payload.id}`, {
+          headers: {
+            access_token: localStorage.access_token
+          }
+        })
+      } catch(err) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+        });
+      }
+    },
+    async loginGoogleHandler({ commit }, token) {
+      try {
+        const response = await axios.post(`/login-google`, { token });
+        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("id", response.data.id);
+        
+        commit("CHANGE_ISLOGGED", true);
+        Swal.fire({
+          icon: "success",
+          title: "Success!!",
+          text: `Welcome to HactivStore :D`,
+        });
+        return true;
+      } catch (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err.response.data.message,
+        });
+      }
     },
 
   },

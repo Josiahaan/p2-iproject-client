@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen w-screen flex items-center justify-center">
+  <div class="min-h-screen w-screen flex items-center justify-center py-10 px-5">
     <div
-      class="min-h-4/6 w-4/5 lg:w-2/5 md:w-3/4 sm:w-3/4 bg-white rounded-lg shadow-xl flex flex-col"
+      class="min-h-3/6 w-3/5 lg:w-2/5 md:w-3/4 sm:w-3/4 bg-white rounded-lg shadow-xl flex flex-col"
     >
       <div class="flex justify-center pt-10 pb-10">
         <p class="font-bold text-5xl">Register</p>
@@ -48,6 +48,30 @@
               placeholder="Insert password here"
             />
           </div>
+          <div class="flex flex-col gap-y-2">
+            <label for="login-phoneNumber" class="font-bold px-2 text-left"
+              >Phone Number</label
+            >
+            <input
+              type="text"
+              id="login-phone"
+              class="w-full rounded-lg border py-2 px-4"
+              v-model="register.phoneNumber"
+              placeholder="Insert phone number here"
+            />
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <label for="login-address" class="font-bold px-2 text-left"
+              >Address</label
+            >
+            <input
+              type="text"
+              id="login-address"
+              class="w-full rounded-lg border py-2 px-4"
+              v-model="register.address"
+              placeholder="Insert address here"
+            />
+          </div>
           <div class="flex justify-center items-center mt-4">
             <BlueButton :text="'Register'"></BlueButton>
           </div>
@@ -80,6 +104,8 @@ export default {
         fullname: "",
         email: "",
         password: "",
+        phoneNumber: "",
+        address: ""
       },
     };
   },
